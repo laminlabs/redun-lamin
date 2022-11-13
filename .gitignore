@@ -1,3 +1,6 @@
+docs/guide/data/
+docs/guide/.redun/redun.db
+
 # macOS
 .DS_Store
 .AppleDouble
