@@ -7,7 +7,7 @@ from typing import List
 from redun import File, task
 from redun.file import glob_file
 
-from bioinformatics_pipeline_tutorial.lib import (
+from redun_lamin_fasta.lib import (
     archive_results_task,
     count_amino_acids_task,
     digest_protein_task,
@@ -15,7 +15,7 @@ from bioinformatics_pipeline_tutorial.lib import (
     plot_count_task,
 )
 
-redun_namespace = "bioinformatics_pipeline_tutorial.workflow"
+redun_namespace = "redun_lamin_fasta.workflow"
 
 
 class Executor(Enum):
