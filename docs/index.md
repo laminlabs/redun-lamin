@@ -3,6 +3,8 @@
 :end-line: 1
 ```
 
+[Get started](guide/get-started).
+
 ```{toctree}
 :maxdepth: 1
 :hidden:
