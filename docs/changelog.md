@@ -3,4 +3,5 @@
 <!-- prettier-ignore -->
 Name | PR | Developer | Date | Version
 --- | --- | --- | --- | ---
+🏗️ Integrate lamindb 0.14.0 - prior to pipeline contexts | [2](https://github.com/laminlabs/redun-lamin-fasta/pull/2) | [falexwolf](https://github.com/falexwolf) | 2022-11-13 |
 🚚 Copy code from Rico's repository | [1](https://github.com/laminlabs/redun-lamin-fasta/pull/1) | [falexwolf](https://github.com/falexwolf) | 2022-11-13 |
