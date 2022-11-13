@@ -60,4 +60,30 @@ def main(
     results_archive = archive_results_task.options(**task_options)(
         count_plots, report_file
     )
+    # LaminDB is called at the end, once all tasks have successfully completed
+    from pathlib import Path
+
+    import lamindb as ln
+    import lamindb.schema as lns
+    import lndb_setup
+    from lamin_logger import logger
+
+    lndb_setup.load("redun-lamin-fasta")  # load the LaminDB instance we'd like to use
+    pipeline = ln.select(lns.Pipeline, name="lamin-redun-fasta").one()
+    run = lns.Run(name="Test run", pipeline_id=pipeline.id, pipeline_v=pipeline.v)
+    logger.info(f"Loaded pipeline {pipeline}")
+    logger.info(f"Created run {run}")
+    # Ingest pipeline outputs
+    ingest = ln.Ingest(run)
+    for filepath in Path("./data/").glob(
+        "results.tgz"
+    ):  # User needs to decide what to track, here just results.tgz  # noqa
+        ingest.add(filepath)
+    ingest.commit()
+    # Link pipeline inputs
+    inputs = (
+        ln.select(lns.DObject).join(lns.Run).join(lns.Jupynb, id="0ymQDuqM5Lwq").all()
+    )
+    links = [lns.RunIn(dobject_id=dobject.id, run_id=run.id) for dobject in inputs]
+    ln.add(links)
     return results_archive
