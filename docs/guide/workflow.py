@@ -70,13 +70,16 @@ def main(
     )
 
     # Continue with LaminDB only if all previous code executed successfully
-    pipeline = ln.select(lns.Pipeline, name="lamin-redun-fasta").one()
-    run = lns.Run(name="Test run", pipeline_id=pipeline.id, pipeline_v=pipeline.v)
-    # Ingest output data
-    ingest = ln.Ingest(run)
-    ingest.add("./data/results.tgz")
-    ingest.commit()
-    # Link input data
-    links = [lns.RunIn(dobject_id=dobject.id, run_id=run.id) for dobject in input_data]
-    ln.add(links)
+    if results_archive.exists():
+        pipeline = ln.select(lns.Pipeline, name="lamin-redun-fasta").one()
+        run = lns.Run(name="Test run", pipeline_id=pipeline.id, pipeline_v=pipeline.v)
+        # Ingest output data
+        ingest = ln.Ingest(run)
+        ingest.add(results_archive.path)
+        ingest.commit()
+        # Link input data
+        links = [
+            lns.RunIn(dobject_id=dobject.id, run_id=run.id) for dobject in input_data
+        ]
+        ln.add(links)
     return results_archive
