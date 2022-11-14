@@ -43,7 +43,7 @@ def main(
     )
 
     # redun tasks
-    input_fastas = [File(str(f.path)) for f in input_data]
+    input_fastas = [File(str(dobject.path)) for dobject in input_data]
     task_options = dict(executor=executor.value)
     peptide_files = [
         digest_protein_task.options(**task_options)(
@@ -68,18 +68,4 @@ def main(
     results_archive = archive_results_task.options(**task_options)(
         count_plots, report_file
     )
-
-    # Continue with LaminDB only if all previous code executed successfully
-    if results_archive.exists():
-        pipeline = ln.select(lns.Pipeline, name="lamin-redun-fasta").one()
-        run = lns.Run(name="Test run", pipeline_id=pipeline.id, pipeline_v=pipeline.v)
-        # Ingest output data
-        ingest = ln.Ingest(run)
-        ingest.add(results_archive.path)
-        ingest.commit()
-        # Link input data
-        links = [
-            lns.RunIn(dobject_id=dobject.id, run_id=run.id) for dobject in input_data
-        ]
-        ln.add(links)
     return results_archive

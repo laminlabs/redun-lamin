@@ -6,6 +6,8 @@ import re
 import tarfile
 from typing import List, Tuple
 
+import lamindb as ln
+import lamindb.schema as lns
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from redun import File, task
@@ -309,4 +311,14 @@ def archive_results_task(inputs_plots: List[File], input_report: File) -> File:
                     tmp_file = file_path
                 output_file = file_path.copy_to(tmp_file, skip_if_exists=True)
                 tar.add(output_file.path)
+    # Ingest archive into Lamindb
+    pipeline = ln.select(lns.Pipeline, name="lamin-redun-fasta").one()
+    run = lns.Run(name="Test run", pipeline_id=pipeline.id, pipeline_v=pipeline.v)
+    # Ingest output data
+    ingest = ln.Ingest(run)
+    ingest.add(output_path)
+    ingest.commit()
+    # Link input data
+    links = [lns.RunIn(dobject_id=dobject.id, run_id=run.id) for dobject in input_data]
+    ln.add(links)
     return tar_file
