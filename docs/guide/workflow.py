@@ -66,6 +66,6 @@ def main(
     ]
     report_file = get_report_task.options(**task_options)(aa_count_files)
     results_archive = archive_results_task.options(**task_options)(
-        count_plots, report_file
+        count_plots, report_file, input_id
     )
     return results_archive

@@ -297,7 +297,9 @@ def get_report_task(input_counts: List[File]) -> File:
 
 
 @task()
-def archive_results_task(inputs_plots: List[File], input_report: File) -> File:
+def archive_results_task(
+    inputs_plots: List[File], input_report: File, input_id: str
+) -> File:
     output_path = os.path.join(
         os.path.split(input_report.dirname())[0], "data", f"results.tgz"
     )
@@ -319,6 +321,9 @@ def archive_results_task(inputs_plots: List[File], input_report: File) -> File:
     ingest.add(output_path)
     ingest.commit()
     # Link input data
+    input_data = (
+        ln.select(lns.DObject).join(lns.Run).join(lns.Jupynb, id=input_id).all()
+    )
     links = [lns.RunIn(dobject_id=dobject.id, run_id=run.id) for dobject in input_data]
     ln.add(links)
     return tar_file
