@@ -43,7 +43,7 @@ def main(
     )
 
     # redun tasks
-    input_fastas = [File(str(dobject.path)) for dobject in input_data]
+    input_fastas = [File(str(dobject.path())) for dobject in input_data]
     task_options = dict(executor=executor.value)
     peptide_files = [
         digest_protein_task.options(**task_options)(
