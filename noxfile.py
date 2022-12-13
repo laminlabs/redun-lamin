@@ -1,28 +1,16 @@
-from pathlib import Path
-
 import nox
+from lndb_setup.test.nox import build_docs, run_pre_commit, run_pytest
 
 nox.options.reuse_existing_virtualenvs = True
 
 
 @nox.session
 def lint(session: nox.Session) -> None:
-    session.install("pre-commit")
-    session.run("pre-commit", "install")
-    session.run("pre-commit", "run", "--all-files")
+    run_pre_commit(session)
 
 
 @nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11"])
 def build(session):
     session.install(".[dev,test]")
-    session.run(
-        "pytest",
-        "-s",
-        "--cov=redun_lamin_fasta",
-        "--cov-append",
-        "--cov-report=term-missing",
-    )
-    session.run("coverage", "xml")
-    prefix = "." if Path("./lndocs").exists() else ".."
-    session.install(f"{prefix}/lndocs")
-    session.run("lndocs")
+    run_pytest(session)
+    build_docs(session)

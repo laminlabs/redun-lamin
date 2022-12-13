@@ -36,14 +36,14 @@ def main(
     max_length: int = 75,
     executor: Executor = Executor.default,
 ) -> List[File]:
-    # Typically, the following wouldn't query for a Jupynb ID, but a meaningful
+    # Typically, the following wouldn't query for a Notebook ID, but a meaningful
     # set of upstream data objects
     input_data = (
-        ln.select(lns.DObject).join(lns.Run).join(lns.Jupynb, id=input_id).all()
+        ln.select(lns.DObject).join(lns.Run).join(lns.Notebook, id=input_id).all()
     )
 
     # redun tasks
-    input_fastas = [File(str(dobject.path)) for dobject in input_data]
+    input_fastas = [File(str(dobject.path())) for dobject in input_data]
     task_options = dict(executor=executor.value)
     peptide_files = [
         digest_protein_task.options(**task_options)(
