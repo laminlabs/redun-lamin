@@ -319,6 +319,6 @@ def archive_results_task(
     run.inputs = (
         ln.select(lns.DObject).join(lns.Run).join(lns.Notebook, id=input_id).all()
     )
-    dobject = ln.DObject(output_path)
+    dobject = ln.DObject(data=output_path, source=run)
     ln.add(dobject)
     return tar_file
