@@ -13,7 +13,7 @@ dependencies = [
     "plotly",
     "kaleido",
     "orjson==3.5.4",
-    "lamindb==0.21.2",
+    "lamindb==0.21.3",
 ]
 
 [project.urls]

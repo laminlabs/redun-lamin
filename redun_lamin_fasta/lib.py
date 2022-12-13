@@ -315,15 +315,10 @@ def archive_results_task(
                 tar.add(output_file.path)
     # Ingest archive into Lamindb
     pipeline = ln.select(lns.Pipeline, name="lamin-redun-fasta").one()
-    run = lns.Run(name="Test run", pipeline_id=pipeline.id, pipeline_v=pipeline.v)
-    # Ingest output data
-    ingest = ln.Ingest(run)
-    ingest.add(output_path)
-    ingest.commit()
-    # Link input data
-    input_data = (
-        ln.select(lns.DObject).join(lns.Run).join(lns.Jupynb, id=input_id).all()
+    run = lns.Run(name="Test run", pipeline=pipeline)
+    run.inputs = (
+        ln.select(lns.DObject).join(lns.Run).join(lns.Notebook, id=input_id).all()
     )
-    links = [lns.RunIn(dobject_id=dobject.id, run_id=run.id) for dobject in input_data]
-    ln.add(links)
+    dobject = ln.DObject(output_path)
+    ln.add(dobject)
     return tar_file
