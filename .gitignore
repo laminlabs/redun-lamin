@@ -1,6 +1,7 @@
 docs/guide/data/
 docs/guide/.redun/redun.db
 docs/guide/redun-lamin-fasta/
+docs/guide/fasta/
 
 # macOS
 .DS_Store
