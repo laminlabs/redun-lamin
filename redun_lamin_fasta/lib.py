@@ -297,9 +297,7 @@ def get_report_task(input_counts: List[File]) -> File:
 
 
 @task()
-def archive_results_task(
-    inputs_plots: List[File], input_report: File, input_id: str
-) -> File:
+def archive_results_task(inputs_plots: List[File], input_report: File) -> File:
     output_path = os.path.join(
         os.path.split(input_report.dirname())[0], "data", f"results.tgz"
     )
@@ -313,12 +311,4 @@ def archive_results_task(
                     tmp_file = file_path
                 output_file = file_path.copy_to(tmp_file, skip_if_exists=True)
                 tar.add(output_file.path)
-    # Ingest archive into Lamindb
-    pipeline = ln.select(lns.Pipeline, name="lamin-redun-fasta").one()
-    run = lns.Run(name="Test run", pipeline=pipeline)
-    run.inputs = (
-        ln.select(lns.DObject).join(lns.Run).join(lns.Notebook, id=input_id).all()
-    )
-    dobject = ln.DObject(data=output_path, source=run)
-    ln.add(dobject)
     return tar_file

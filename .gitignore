@@ -2,6 +2,9 @@ docs/guide/data/
 docs/guide/.redun/redun.db
 docs/guide/redun-lamin-fasta/
 docs/guide/fasta/
+docs/guide/redun_exec.json
+docs/guide/redun_stderr.txt
+docs/guide/redun_stdout.txt
 
 # macOS
 .DS_Store

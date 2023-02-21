@@ -8,6 +8,7 @@ import lamindb as ln
 import lamindb.schema as lns
 from redun import File, task
 
+from redun_lamin_fasta import __version__
 from redun_lamin_fasta.lib import (
     archive_results_task,
     count_amino_acids_task,
@@ -26,9 +27,9 @@ class Executor(Enum):
     batch_debug = "batch_debug"
 
 
-@task(version="0.0.1", config_args=["executor"])
+@task(version=__version__, config_args=["executor"])
 def main(
-    input_id: str,
+    run_id: str,
     amino_acid: str = "C",
     enzyme_regex: str = "[KR]",
     missed_cleavages: int = 0,
@@ -38,12 +39,11 @@ def main(
 ) -> List[File]:
     # Typically, the following wouldn't query for a Notebook ID, but a meaningful
     # set of upstream data objects
-    input_data = (
-        ln.select(lns.DObject).join(lns.Run).join(lns.Notebook, id=input_id).all()
-    )
-
+    with ln.Session() as ss:
+        run = ss.select(lns.Run, id=run_id).one()
+        input_dobjects = run.inputs
     # redun tasks
-    input_fastas = [File(str(dobject.path())) for dobject in input_data]
+    input_fastas = [File(str(dobject.path())) for dobject in input_dobjects]
     task_options = dict(executor=executor.value)
     peptide_files = [
         digest_protein_task.options(**task_options)(
@@ -66,6 +66,7 @@ def main(
     ]
     report_file = get_report_task.options(**task_options)(aa_count_files)
     results_archive = archive_results_task.options(**task_options)(
-        count_plots, report_file, input_id
+        count_plots,
+        report_file,
     )
     return results_archive
