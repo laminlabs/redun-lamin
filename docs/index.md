@@ -4,7 +4,7 @@
 ```
 
 - [Get started](guide/get-started).
-- [Track a redun workflow run](guide/get-started).
+- [Track a redun workflow run](guide/run-workflow).
 - [Changelog](changelog).
 
 ```{toctree}
