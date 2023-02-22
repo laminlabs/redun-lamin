@@ -3,7 +3,9 @@
 :end-line: 1
 ```
 
-[Get started](guide/get-started).
+- [Get started](guide/get-started).
+- [Track a redun workflow run](guide/get-started).
+- [Changelog](changelog).
 
 ```{toctree}
 :maxdepth: 1
