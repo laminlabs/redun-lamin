@@ -3,8 +3,8 @@
 :end-line: 1
 ```
 
-- [Get started](guide/get-started).
-- [Track a redun workflow run](guide/run-workflow).
+- [Guide](guide/index).
+- [Notebook sources](https://github.com/laminlabs/redun-lamin-fasta/tree/main/docs/guide)
 - [Changelog](changelog).
 
 ```{toctree}
