@@ -1,5 +1,5 @@
 import nox
-from laminci import move_built_docs_to_docs_slash_project_slug, upload_docs_dir
+from laminci import move_built_docs_to_docs_slash_project_slug, upload_docs_artifact
 from laminci.nox import build_docs, login_testuser1, run_pre_commit, run_pytest
 
 nox.options.reuse_existing_virtualenvs = True
@@ -16,5 +16,5 @@ def build(session):
     session.install(".[dev,test]")
     run_pytest(session, coverage=False)
     build_docs(session)
-    upload_docs_dir()
+    upload_docs_artifact()
     move_built_docs_to_docs_slash_project_slug()
