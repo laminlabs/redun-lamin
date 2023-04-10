@@ -39,11 +39,11 @@ def main(
 ) -> List[File]:
     # Typically, the following wouldn't query for a Notebook ID, but a meaningful
     # set of upstream data objects
-    with ln.Session() as ss:
-        run = ss.select(lns.Run, id=run_id).one()
-        input_dobjects = run.inputs
+    with ln.Session() as session:
+        run = session.select(lns.Run, id=run_id).one()
+        run.inputs  # have to lazy load inputs from DB inside session
     # redun tasks
-    input_fastas = [File(str(dobject.path())) for dobject in input_dobjects]
+    input_fastas = [File(str(file.stage())) for file in run.inputs]
     task_options = dict(executor=executor.value)
     peptide_files = [
         digest_protein_task.options(**task_options)(
