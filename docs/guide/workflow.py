@@ -5,7 +5,6 @@ from enum import Enum
 from typing import List
 
 import lamindb as ln
-import lamindb.schema as lns
 from redun import File, task
 
 from redun_lamin_fasta import __version__
@@ -39,11 +38,9 @@ def main(
 ) -> List[File]:
     # Typically, the following wouldn't query for a Notebook ID, but a meaningful
     # set of upstream data objects
-    with ln.Session() as session:
-        run = session.select(lns.Run, id=run_id).one()
-        run.inputs  # have to lazy load inputs from DB inside session
+    run = ln.Run.select(id=run_id).one()
     # redun tasks
-    input_fastas = [File(str(file.stage())) for file in run.inputs]
+    input_fastas = [File(str(file.stage())) for file in run.inputs.all()]
     task_options = dict(executor=executor.value)
     peptide_files = [
         digest_protein_task.options(**task_options)(
