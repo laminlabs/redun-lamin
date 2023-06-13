@@ -23,8 +23,6 @@ Home = "https://github.com/laminlabs/redun-lamin-fasta"
 dev = [
     "pre-commit",
     "nox",
-]
-test = [
     "pytest>=6.0",
     "pytest-cov",
 ]
