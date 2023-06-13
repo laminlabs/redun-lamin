@@ -8,12 +8,10 @@ authors = [{name = "Lamin Labs", email = "laminlabs@gmail.com"}]
 readme = "README.md"
 dynamic = ["version", "description"]
 dependencies = [
-    "nbproject>=0.8.1",
     "redun",
     "plotly",
     "kaleido",
     "orjson==3.5.4",
-    "lamindb>=0.28.0",
 ]
 
 [project.urls]
@@ -23,6 +21,7 @@ Home = "https://github.com/laminlabs/redun-lamin-fasta"
 dev = [
     "pre-commit",
     "nox",
+    "nbproject_test",
     "pytest>=6.0",
     "pytest-cov",
 ]
