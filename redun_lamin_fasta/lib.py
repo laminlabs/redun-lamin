@@ -6,8 +6,6 @@ import re
 import tarfile
 from typing import List, Tuple
 
-import lamindb as ln
-import lamindb.schema as lns
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from redun import File, task
