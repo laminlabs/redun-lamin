@@ -24,5 +24,5 @@ def install(session: nox.Session):
 def build(session):
     login_testuser1(session)
     run_pytest(session, coverage=False)
-    build_docs(session)
+    build_docs(session, strip_prefix=True)
     upload_docs_artifact(aws=True)
