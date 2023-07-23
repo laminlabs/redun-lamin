@@ -40,7 +40,7 @@ def main(
     # set of upstream data objects
     run = ln.Run.select(id=run_id).one()
     # redun tasks
-    input_fastas = [File(str(file.stage())) for file in run.inputs.all()]
+    input_fastas = [File(str(file.stage())) for file in run.input_files.all()]
     task_options = dict(executor=executor.value)
     peptide_files = [
         digest_protein_task.options(**task_options)(
