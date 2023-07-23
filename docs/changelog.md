@@ -3,6 +3,7 @@
 <!-- prettier-ignore -->
 Name | PR | Developer | Date | Version
 --- | --- | --- | --- | ---
+⬆️ Upgrade to lamindb 0.48a3 | [11](https://github.com/laminlabs/redun-lamin-fasta/pull/11) | [falexwolf](https://github.com/falexwolf) | 2023-07-23 |
 🚚 Migrate to lamindb 0.42 | [10](https://github.com/laminlabs/redun-lamin-fasta/pull/10) | [falexwolf](https://github.com/falexwolf) | 2023-06-13 |
 :truck: Migrate to latest lamindb version | [9](https://github.com/laminlabs/redun-lamin-fasta/pull/9) | [falexwolf](https://github.com/falexwolf) | 2023-04-10 |
 👷 Update CI | [8](https://github.com/laminlabs/redun-lamin-fasta/pull/8) | [falexwolf](https://github.com/falexwolf) | 2023-02-24 |
