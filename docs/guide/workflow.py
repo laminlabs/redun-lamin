@@ -7,7 +7,6 @@ from typing import List
 import lamindb as ln
 from redun import File, task
 
-from redun_lamin_fasta import __version__
 from redun_lamin_fasta.lib import (
     archive_results_task,
     count_amino_acids_task,
@@ -26,9 +25,9 @@ class Executor(Enum):
     batch_debug = "batch_debug"
 
 
-@task(version=__version__, config_args=["executor"])
+@task(version="0.0.1", config_args=["executor"])
 def main(
-    run_id: str,
+    input_dir: str,
     amino_acid: str = "C",
     enzyme_regex: str = "[KR]",
     missed_cleavages: int = 0,
@@ -36,11 +35,15 @@ def main(
     max_length: int = 75,
     executor: Executor = Executor.default,
 ) -> List[File]:
-    # Typically, the following wouldn't query for a Notebook ID, but a meaningful
-    # set of upstream data objects
-    run = ln.Run.select(id=run_id).one()
-    # redun tasks
-    input_fastas = [File(str(file.stage())) for file in run.input_files.all()]
+    # register input files in lamindb
+    ln.save(ln.File.from_dir(input_dir))
+    # query & track this pipeline
+    transform = ln.Transform.filter(name="lamin-redun-fasta", version="0.1.0").one()
+    ln.track(transform)
+    # query files from lamindb
+    input_fastas = [
+        File(str(file.stage())) for file in ln.File.filter(key__startswith="fasta/")
+    ]
     task_options = dict(executor=executor.value)
     peptide_files = [
         digest_protein_task.options(**task_options)(
@@ -63,7 +66,6 @@ def main(
     ]
     report_file = get_report_task.options(**task_options)(aa_count_files)
     results_archive = archive_results_task.options(**task_options)(
-        count_plots,
-        report_file,
+        count_plots, report_file
     )
     return results_archive
