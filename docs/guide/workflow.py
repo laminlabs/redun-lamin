@@ -35,10 +35,9 @@ def main(
     max_length: int = 75,
     executor: Executor = Executor.default,
 ) -> List[File]:
-    # register files in lamindb
-    input_fastas = ln.File.from_dir(input_dir)
-    ln.save(input_fastas)
-    # inform lamindb
+    # register input files in lamindb
+    ln.save(ln.File.from_dir(input_dir))
+    # query & track this pipeline
     transform = ln.Transform.filter(name="lamin-redun-fasta", version="0.1.0").one()
     ln.track(transform)
     # query files from lamindb
