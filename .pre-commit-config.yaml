@@ -60,7 +60,7 @@ repos:
       - id: mypy
         exclude: |
           (?x)(
-              docs/guide/workflow.py|
+              docs/workflow.py|
               redun_lamin_fasta/__init__.py|
               redun_lamin_fasta/lib.py
           )
@@ -72,7 +72,7 @@ repos:
           - --ignore=D100,D101,D102,D103,D106,D107,D203,D204,D213,D215,D400,D401,D403,D404,D406,D407,D408,D409,D412,D413
         exclude: |
           (?x)(
-              docs/guide/workflow.py|
+              docs/workflow.py|
               redun_lamin_fasta/__init__.py|
               redun_lamin_fasta/lib.py
           )
