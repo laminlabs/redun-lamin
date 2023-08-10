@@ -6,6 +6,6 @@
 ```{toctree}
 :maxdepth: 1
 
-guide/index
+guide
 changelog
 ```
