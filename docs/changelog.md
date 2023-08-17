@@ -3,6 +3,7 @@
 <!-- prettier-ignore -->
 Name | PR | Developer | Date | Version
 --- | --- | --- | --- | ---
+📝 Polish | [14](https://github.com/laminlabs/redun-lamin-fasta/pull/14) | [falexwolf](https://github.com/falexwolf) | 2023-08-17 |
 🎨 Move to root-level | [13](https://github.com/laminlabs/redun-lamin-fasta/pull/13) | [falexwolf](https://github.com/falexwolf) | 2023-08-10 |
 ♻️ Simplify setup | [12](https://github.com/laminlabs/redun-lamin-fasta/pull/12) | [falexwolf](https://github.com/falexwolf) | 2023-08-03 |
 ⬆️ Upgrade to lamindb 0.48a3 | [11](https://github.com/laminlabs/redun-lamin-fasta/pull/11) | [falexwolf](https://github.com/falexwolf) | 2023-07-23 |
