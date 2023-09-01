@@ -41,9 +41,10 @@ def main(
     transform = ln.Transform.filter(name="lamin-redun-fasta", version="0.1.0").one()
     ln.track(transform)
     # query files from lamindb
-    input_fastas = [
-        File(str(file.stage())) for file in ln.File.filter(key__startswith="fasta/")
+    input_filepaths = [
+        file.stage() for file in ln.File.filter(key__startswith="fasta/")
     ]
+    input_fastas = [File(str(path)) for path in input_filepaths]
     task_options = dict(executor=executor.value)
     peptide_files = [
         digest_protein_task.options(**task_options)(
