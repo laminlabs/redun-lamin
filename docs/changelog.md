@@ -3,6 +3,7 @@
 <!-- prettier-ignore -->
 Name | PR | Developer | Date | Version
 --- | --- | --- | --- | ---
+♻️ Move output file registration into workflow | [15](https://github.com/laminlabs/redun-lamin-fasta/pull/15) | [falexwolf](https://github.com/falexwolf) | 2023-09-20 |
 📝 Polish | [14](https://github.com/laminlabs/redun-lamin-fasta/pull/14) | [falexwolf](https://github.com/falexwolf) | 2023-08-17 |
 🎨 Move to root-level | [13](https://github.com/laminlabs/redun-lamin-fasta/pull/13) | [falexwolf](https://github.com/falexwolf) | 2023-08-10 |
 ♻️ Simplify setup | [12](https://github.com/laminlabs/redun-lamin-fasta/pull/12) | [falexwolf](https://github.com/falexwolf) | 2023-08-03 |
