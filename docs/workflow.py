@@ -69,4 +69,5 @@ def main(
     results_archive = archive_results_task.options(**task_options)(
         count_plots, report_file
     )
+    ln.File(results_archive.path).save()
     return results_archive
