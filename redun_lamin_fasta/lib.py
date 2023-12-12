@@ -310,5 +310,5 @@ def archive_results_task(inputs_plots: List[File], input_report: File) -> File:
                     tmp_file = file_path
                 output_file = file_path.copy_to(tmp_file, skip_if_exists=True)
                 tar.add(output_file.path)
-    ln.File(output_path).save()
+    ln.Artifact(output_path).save()
     return tar_file
