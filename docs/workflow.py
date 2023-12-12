@@ -36,13 +36,13 @@ def main(
     executor: Executor = Executor.default,
 ) -> List[File]:
     # register input files in lamindb
-    ln.save(ln.File.from_dir(input_dir))
+    ln.save(ln.Artifact.from_dir(input_dir))
     # query & track this pipeline
     transform = ln.Transform.filter(name="lamin-redun-fasta", version="0.1.0").one()
     ln.track(transform)
     # query files from lamindb
     input_filepaths = [
-        file.stage() for file in ln.File.filter(key__startswith="fasta/")
+        artifact.stage() for artifact in ln.Artifact.filter(key__startswith="fasta/")
     ]
     input_fastas = [File(str(path)) for path in input_filepaths]
     task_options = dict(executor=executor.value)
