@@ -39,7 +39,7 @@ def main(
     ln.save(ln.Artifact.from_dir(input_dir))
     # query & track this pipeline
     transform = ln.Transform.filter(name="lamin-redun-fasta", version="0.1.0").one()
-    ln.track(transform)
+    ln.track(transform=transform)
     # query files from lamindb
     input_filepaths = [
         artifact.stage() for artifact in ln.Artifact.filter(key__startswith="fasta/")
