@@ -42,7 +42,7 @@ def main(
     ln.track(transform=transform)
     # query files from lamindb
     input_filepaths = [
-        artifact.stage() for artifact in ln.Artifact.filter(key__startswith="fasta/")
+        artifact.cache() for artifact in ln.Artifact.filter(key__startswith="fasta/")
     ]
     input_fastas = [File(str(path)) for path in input_filepaths]
     task_options = dict(executor=executor.value)
