@@ -47,6 +47,7 @@ def main(
         type="pipeline",
         reference="https://github.com/laminlabs/redun-lamin-fasta",
     ).save()
+    # optional: label the transform as "redun"
     ulabel_redun = ln.ULabel(name="redun").save()
     transform.ulabels.add(ulabel_redun)
     # query & track this pipeline
