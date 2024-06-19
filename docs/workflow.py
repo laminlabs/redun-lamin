@@ -5,6 +5,7 @@
 from enum import Enum
 from typing import List
 
+import bionty as bt
 import lamindb as ln
 from redun import File, task
 
@@ -58,10 +59,21 @@ def main(
     input_filepaths = [
         artifact.cache() for artifact in ln.Artifact.filter(key__startswith="fasta/")
     ]
-    input_fastas = [File(str(path)) for path in input_filepaths]
+    # optional: annotate the fasta files by Protein
+    for input_file in ln.Artifact.filter(key__startswith="fasta/").all():
+        input_filepath = input_file.cache()
+        with open(input_filepath, "r") as file:
+            header = file.readline()
+            uniprotkb_id = header.split("|")[1]
+            name = header.split("|")[2].split(" OS=")[0]
+        protein = bt.Protein.from_public(uniprotkb_id=uniprotkb_id, organism="human")
+        protein.name = name
+        protein.save()
+        input_file.proteins.add(protein)
 
     # execute redun tasks
     task_options = dict(executor=executor.value)
+    input_fastas = [File(str(path)) for path in input_filepaths]
     peptide_files = [
         digest_protein_task.options(**task_options)(
             fasta,
