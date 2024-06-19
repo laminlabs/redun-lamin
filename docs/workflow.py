@@ -1,4 +1,5 @@
 """workflow.py"""
+
 # This code is a copy from https://github.com/ricomnl/bioinformatics-pipeline-tutorial/blob/2ccfe727f56b449e28e83fee2d9f003ec44a2cdf/wf/workflow.py  # noqa
 # Copyright Rico Meinl 2022
 from enum import Enum
@@ -14,8 +15,9 @@ from redun_lamin_fasta.lib import (
     get_report_task,
     plot_count_task,
 )
+import redun_lamin_fasta
 
-redun_namespace = "redun_lamin_fasta.workflow"
+redun_namespace = redun_lamin_fasta.__name__
 
 
 class Executor(Enum):
@@ -35,16 +37,29 @@ def main(
     max_length: int = 75,
     executor: Executor = Executor.default,
 ) -> List[File]:
-    # register input files in lamindb
-    ln.save(ln.Artifact.from_dir(input_dir))
+    # get run parameters
+    params = {k: v for k, v in locals().items() if k != "self"}
+    params["executor"] = executor.value
+    # register the workflow in the `Transform` registry
+    transform = ln.Transform(
+        name=redun_lamin_fasta.__name__,
+        version=redun_lamin_fasta.__version__,
+        type="pipeline",
+        reference="https://github.com/laminlabs/redun-lamin-fasta",
+    ).save()
+    ulabel_redun = ln.ULabel(name="redun").save()
+    transform.ulabels.add(ulabel_redun)
     # query & track this pipeline
-    transform = ln.Transform.filter(name="lamin-redun-fasta", version="0.1.0").one()
-    ln.track(transform=transform)
-    # query files from lamindb
+    ln.track(transform=transform, params=params)
+    # register input files in lamindb
+    ln.save(ln.Artifact.from_dir(input_dir, run=False))
+    # query input files from lamindb
     input_filepaths = [
         artifact.cache() for artifact in ln.Artifact.filter(key__startswith="fasta/")
     ]
     input_fastas = [File(str(path)) for path in input_filepaths]
+
+    # execute redun tasks
     task_options = dict(executor=executor.value)
     peptide_files = [
         digest_protein_task.options(**task_options)(
