@@ -8,6 +8,7 @@ from typing import List
 import lamindb as ln
 from redun import File, task
 
+import redun_lamin_fasta
 from redun_lamin_fasta.lib import (
     archive_results_task,
     count_amino_acids_task,
@@ -15,7 +16,6 @@ from redun_lamin_fasta.lib import (
     get_report_task,
     plot_count_task,
 )
-import redun_lamin_fasta
 
 redun_namespace = redun_lamin_fasta.__name__
 
