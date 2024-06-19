@@ -3,6 +3,7 @@
 <!-- prettier-ignore -->
 Name | PR | Developer | Date | Version
 --- | --- | --- | --- | ---
+Annotate with protein | [19](https://github.com/laminlabs/redun-lamin-fasta/pull/19) | [sunnyosun](https://github.com/sunnyosun) | 2024-06-19 |
 ✨ Update use case | [18](https://github.com/laminlabs/redun-lamin-fasta/pull/18) | [sunnyosun](https://github.com/sunnyosun) | 2024-06-19 |
 👷 Use py3.10 | [17](https://github.com/laminlabs/redun-lamin-fasta/pull/17) | [sunnyosun](https://github.com/sunnyosun) | 2024-01-08 |
 🚚 Rename File to Artifact | [16](https://github.com/laminlabs/redun-lamin-fasta/pull/16) | [falexwolf](https://github.com/falexwolf) | 2023-12-12 |
