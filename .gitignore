@@ -122,3 +122,4 @@ _docs_tmp*
 redun_exec.json
 redun_stderr.txt
 redun_stdout.txt
+data/
