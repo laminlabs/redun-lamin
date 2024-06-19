@@ -62,8 +62,8 @@ def main(
     # optional: annotate the fasta files by Protein
     for input_file in ln.Artifact.filter(key__startswith="fasta/").all():
         input_filepath = input_file.cache()
-        with open(input_filepath, "r") as file:
-            header = file.readline()
+        with open(input_filepath, "r") as f:
+            header = f.readline()
             uniprotkb_id = header.split("|")[1]
             name = header.split("|")[2].split(" OS=")[0]
         protein = bt.Protein.from_public(uniprotkb_id=uniprotkb_id, organism="human")
