@@ -116,3 +116,9 @@ docs/redun_lamin_fasta.*
 lamin_sphinx
 docs/conf.py
 _docs_tmp*
+.lamindb/
+.redun/
+*.lndb
+redun_exec.json
+redun_stderr.txt
+redun_stdout.txt

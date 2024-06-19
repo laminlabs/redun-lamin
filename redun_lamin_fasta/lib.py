@@ -1,4 +1,5 @@
 """bioinformatics_pipeline_tutorial/lib.py"""
+
 # This file is a copy from https://github.com/ricomnl/bioinformatics-pipeline-tutorial/blob/2ccfe727f56b449e28e83fee2d9f003ec44a2cdf/bioinformatics_pipeline_tutorial/lib.py  # noqa
 # Copyright Rico Meinl 2022
 import os
@@ -310,5 +311,6 @@ def archive_results_task(inputs_plots: List[File], input_report: File) -> File:
                     tmp_file = file_path
                 output_file = file_path.copy_to(tmp_file, skip_if_exists=True)
                 tar.add(output_file.path)
-    ln.Artifact(output_path).save()
+    # register output file in lamindb
+    ln.Artifact(output_path, description="results").save()
     return tar_file
