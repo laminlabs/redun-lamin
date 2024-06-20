@@ -39,7 +39,7 @@ def main(
     executor: Executor = Executor.default,
 ) -> List[File]:
     # (optional) get run parameters
-    params = {k: v for k, v in locals().items() if k != "self"}
+    params = locals()
     params["executor"] = str(params["executor"])
     # (optional) register params in Param registry
     ln.save([ln.Param(name=k, dtype=type(v).__name__) for k, v in params.items()])
@@ -55,6 +55,8 @@ def main(
     ulabel_redun = ln.ULabel(name="redun").save()
     transform.ulabels.add(ulabel_redun)
     # query & track the workflow run
+    # (optional) sync with a github repo
+    ln.settings.sync_git_repo = "https://github.com/laminlabs/redun-lamin-fasta"
     # (optional) pass params
     ln.track(transform=transform, params=params)
     # register input files in lamindb
