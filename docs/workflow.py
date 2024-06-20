@@ -44,7 +44,7 @@ def main(
     # (optional) register params in Param registry
     ln.save([ln.Param(name=k, dtype=type(v).__name__) for k, v in params.items()])
     # register the workflow in the `Transform` registry
-    # (can also be done external to this workflow)
+    # (can also be done outside of this workflow)
     transform = ln.Transform(
         name=redun_lamin_fasta.__name__,
         version=redun_lamin_fasta.__version__,
