@@ -21,7 +21,7 @@ from redun_lamin_fasta.lib import (
 redun_namespace = redun_lamin_fasta.__name__
 
 
-class Executor(Enum):
+class Executor(str, Enum):
     default = "default"
     process = "process"
     batch = "batch"
@@ -38,28 +38,33 @@ def main(
     max_length: int = 75,
     executor: Executor = Executor.default,
 ) -> List[File]:
-    # get run parameters
+    # (optional) get run parameters
     params = {k: v for k, v in locals().items() if k != "self"}
-    params["executor"] = executor.value
+    params["executor"] = str(params["executor"])
+    # (optional) register params in Param registry
+    ln.save([ln.Param(name=k, dtype=type(v).__name__) for k, v in params.items()])
     # register the workflow in the `Transform` registry
+    # (can also be done outside of this workflow)
     transform = ln.Transform(
         name=redun_lamin_fasta.__name__,
         version=redun_lamin_fasta.__version__,
         type="pipeline",
         reference="https://github.com/laminlabs/redun-lamin-fasta",
     ).save()
-    # optional: label the transform as "redun"
+    # (optional) label the transform as "redun"
     ulabel_redun = ln.ULabel(name="redun").save()
     transform.ulabels.add(ulabel_redun)
-    # query & track this pipeline
+    # query & track the workflow run
+    # (optional) pass params
     ln.track(transform=transform, params=params)
     # register input files in lamindb
+    # (typically done external to this workflow without passing run=False)
     ln.save(ln.Artifact.from_dir(input_dir, run=False))
-    # query input files from lamindb
+    # (optional) query input files from lamindb
     input_filepaths = [
         artifact.cache() for artifact in ln.Artifact.filter(key__startswith="fasta/")
     ]
-    # optional: annotate the fasta files by Protein
+    # (optional) annotate the fasta files by Protein
     for input_file in ln.Artifact.filter(key__startswith="fasta/").all():
         input_filepath = input_file.cache()
         with open(input_filepath, "r") as f:
