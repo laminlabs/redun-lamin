@@ -1,5 +1,3 @@
-# redun-lamin-fasta: Track redun workflow for fasta files
-
-This use case is based on Rico Meinl’s [GitHub repository](https://github.com/ricomnl/bioinformatics-pipeline-tutorial/tree/redun).
+# redun-lamin: Track redun workflows in LaminDB
 
 Read the [docs](https://lamin.ai/docs/redun).
