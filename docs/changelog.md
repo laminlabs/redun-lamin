@@ -3,6 +3,7 @@
 <!-- prettier-ignore -->
 Name | PR | Developer | Date | Version
 --- | --- | --- | --- | ---
+♻️ Prettify | [22](https://github.com/laminlabs/redun-lamin/pull/22) | [falexwolf](https://github.com/falexwolf) | 2024-06-25 |
 💚 Fix param tracking for lamindb 0.74 | [20](https://github.com/laminlabs/redun-lamin-fasta/pull/20) | [falexwolf](https://github.com/falexwolf) | 2024-06-20 |
 Annotate with protein | [19](https://github.com/laminlabs/redun-lamin-fasta/pull/19) | [sunnyosun](https://github.com/sunnyosun) | 2024-06-19 |
 ✨ Update use case | [18](https://github.com/laminlabs/redun-lamin-fasta/pull/18) | [sunnyosun](https://github.com/sunnyosun) | 2024-06-19 |
