@@ -47,7 +47,7 @@ def main(
     ln.settings.transform.stem_uid = "taasWKawCiNA"
     ln.settings.transform.version = redun_lamin_fasta.__version__
     # (optional) sync with a github repo
-    ln.settings.sync_git_repo = "https://github.com/laminlabs/redun-lamin-fasta"
+    ln.settings.sync_git_repo = "https://github.com/laminlabs/redun-lamin"
     # track the workflow run
     run = ln.track(params=params)
     # (optional) label the transform as "redun"
