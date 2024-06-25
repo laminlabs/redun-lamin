@@ -43,19 +43,17 @@ def main(
     params["executor"] = str(params["executor"])
     # (optional) register params in Param registry
     ln.save([ln.Param(name=k, dtype=type(v).__name__) for k, v in params.items()])
-    # register the workflow in the `Transform` registry
-    # (can also be done outside of this workflow)
+    # register the workflow as a script in the transform registry
     ln.settings.transform.stem_uid = "taasWKawCiNA"
     ln.settings.transform.version = redun_lamin_fasta.__version__
-    # query & track the workflow run
     # (optional) sync with a github repo
     ln.settings.sync_git_repo = "https://github.com/laminlabs/redun-lamin-fasta"
-    # (optional) pass params
+    # track the workflow run
     run = ln.track(params=params)
     # (optional) label the transform as "redun"
     ulabel_redun = ln.ULabel(name="redun").save()
     run.transform.ulabels.add(ulabel_redun)
-    # register input files in lamindb
+    # (optional) register input files in lamindb
     # (typically done external to this workflow without passing run=False)
     ln.save(ln.Artifact.from_dir(input_dir, run=False))
     # (optional) query input files from lamindb
