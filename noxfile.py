@@ -12,10 +12,12 @@ def lint(session: nox.Session) -> None:
 
 @nox.session
 def install(session: nox.Session):
-    session.run(*"pip install .[dev]".split())
+    session.run(*"uv pip install --system .[dev]".split())
     session.run(
+        "uv",
         "pip",
         "install",
+        "--system",
         "lamindb[bionty] @ git+https://github.com/laminlabs/lamindb@main",
     )
 
