@@ -11,8 +11,6 @@ dependencies = [
     "redun",
     "plotly",
     "kaleido",
-    "orjson==3.5.4",
-    "graphviz",
 ]
 
 [project.urls]
