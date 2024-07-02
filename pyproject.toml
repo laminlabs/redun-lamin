@@ -8,11 +8,7 @@ authors = [{name = "Lamin Labs", email = "laminlabs@gmail.com"}]
 readme = "README.md"
 dynamic = ["version", "description"]
 dependencies = [
-    "redun",
-    "plotly",
-    "kaleido",
-    "orjson==3.5.4",
-    "graphviz",
+    "redun"
 ]
 
 [project.urls]
