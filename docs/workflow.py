@@ -51,7 +51,7 @@ def main(
     ln.context.track(params=params)  # (optional) pass params
     # (optional) label the transform as "redun"
     ulabel_redun = ln.ULabel(name="redun").save()
-    ln.context.run.transform.ulabels.add(ulabel_redun)
+    ln.context.transform.ulabels.add(ulabel_redun)
     # (optional) register input files in lamindb
     # (typically done upstream to this workflow without passing run=False)
     ln.save(ln.Artifact.from_dir(input_dir, run=False))
