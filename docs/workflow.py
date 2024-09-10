@@ -67,7 +67,7 @@ def main(
             header = f.readline()
             uniprotkb_id = header.split("|")[1]
             name = header.split("|")[2].split(" OS=")[0]
-        protein = bt.Protein.from_public(uniprotkb_id=uniprotkb_id, organism="human")
+        protein = bt.Protein.from_source(uniprotkb_id=uniprotkb_id, organism="human")
         protein.name = name
         protein.save()
         input_file.proteins.add(protein)
