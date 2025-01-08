@@ -16,28 +16,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.12"]
     timeout-minutes: 6
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: laminlabs/lndocs
           ssh-key: ${{ secrets.READ_LNDOCS }}
           path: lndocs
           ref: main
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: "pip"
-          cache-dependency-path: ".github/workflows/build.yml" # See dependencies below
       - uses: actions/cache@v3
         with:
           path: ~/.cache/pre-commit
           key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -48,6 +47,7 @@ jobs:
       - run: nox -s lint
       - run: nox -s install
       - run: nox -s build
+
       - uses: voxmedia/github-action-slack-notify-build@v1
         if: success()
         env:
@@ -56,6 +56,7 @@ jobs:
           channel_id: C05FDBBFJ1F
           status: SUCCESS
           color: good
+
       - uses: voxmedia/github-action-slack-notify-build@v1
         if: failure()
         env:
@@ -64,8 +65,9 @@ jobs:
           channel_id: C05FDBBFJ1F
           status: FAILURE
           color: danger
+
       - uses: nwtgck/actions-netlify@v1.2
-        if: matrix.python-version == '3.10'
+        if: matrix.python-version == '3.12'
         with:
           publish-dir: "_build/html"
           production-deploy: ${{ github.event_name == 'push' }}
