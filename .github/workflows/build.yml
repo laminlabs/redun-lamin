@@ -43,7 +43,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
       - run: sudo apt-get -y install graphviz
-      - run: pip install -U laminci
+      - run: pip install "laminci@git+https://x-access-token:${{ secrets.LAMIN_BUILD_DOCS }}@github.com/laminlabs/laminci"
       - run: nox -s lint
       - run: nox -s install
       - run: nox -s build
