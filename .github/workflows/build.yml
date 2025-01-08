@@ -58,7 +58,7 @@ jobs:
           color: good
 
       - uses: voxmedia/github-action-slack-notify-build@v1
-        if: failure()
+        if: ${{ failure() && github.event_name == 'repository_dispatch' }}w
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_GITHUB_ACTION }}
         with:
