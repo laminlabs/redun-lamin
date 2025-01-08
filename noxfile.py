@@ -19,7 +19,7 @@ def lint(session: nox.Session) -> None:
 @nox.session
 def install(session: nox.Session):
     session.run(*"uv pip install --system .[dev]".split())
-    install_lamindb(session, branch="release", extras="bionty")
+    install_lamindb(session, branch="main", extras="bionty")
 
 
 @nox.session
