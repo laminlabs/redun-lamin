@@ -1,9 +1,8 @@
-"""workflow.py"""
+"""workflow.py."""
 
-# This code is a copy from https://github.com/ricomnl/bioinformatics-pipeline-tutorial/blob/2ccfe727f56b449e28e83fee2d9f003ec44a2cdf/wf/workflow.py  # noqa
+# This code is a copy from https://github.com/ricomnl/bioinformatics-pipeline-tutorial/blob/2ccfe727f56b449e28e83fee2d9f003ec44a2cdf/wf/workflow.py
 # Copyright Rico Meinl 2022
 from enum import Enum
-from typing import List
 
 import bionty as bt
 import lamindb as ln
@@ -37,7 +36,7 @@ def main(
     min_length: int = 4,
     max_length: int = 75,
     executor: Executor = Executor.default,
-) -> List[File]:
+) -> list[File]:
     # (optional) manually register params in Param registry
     params = locals()
     params["executor"] = str(params["executor"])
@@ -63,7 +62,7 @@ def main(
     # (optional) annotate the fasta files by Protein
     for input_file in ln.Artifact.filter(key__startswith="fasta/").all():
         input_filepath = input_file.cache()
-        with open(input_filepath, "r") as f:
+        with open(input_filepath) as f:
             header = f.readline()
             uniprotkb_id = header.split("|")[1]
             name = header.split("|")[2].split(" OS=")[0]
@@ -73,7 +72,7 @@ def main(
         input_file.proteins.add(protein)
 
     # execute redun tasks
-    task_options = dict(executor=executor.value)
+    task_options = {"executor": executor.value}
     input_fastas = [File(str(path)) for path in input_filepaths]
     peptide_files = [
         digest_protein_task.options(**task_options)(

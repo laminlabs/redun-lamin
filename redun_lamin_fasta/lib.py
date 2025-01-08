@@ -1,11 +1,10 @@
-"""bioinformatics_pipeline_tutorial/lib.py"""
+"""bioinformatics_pipeline_tutorial/lib.py."""
 
-# This file is a copy from https://github.com/ricomnl/bioinformatics-pipeline-tutorial/blob/2ccfe727f56b449e28e83fee2d9f003ec44a2cdf/bioinformatics_pipeline_tutorial/lib.py  # noqa
+# This file is a copy from https://github.com/ricomnl/bioinformatics-pipeline-tutorial/blob/2ccfe727f56b449e28e83fee2d9f003ec44a2cdf/bioinformatics_pipeline_tutorial/lib.py
 # Copyright Rico Meinl 2022
 import os
 import re
 import tarfile
-from typing import List, Tuple
 
 import lamindb as ln
 import plotly.graph_objects as go
@@ -16,10 +15,8 @@ from redun.file import get_filesystem_class
 redun_namespace = "bioinformatics_pipeline_tutorial.lib"
 
 
-def load_fasta(input_file: File) -> Tuple[str, str]:
-    """
-    Load a protein with its metadata from a given .fasta file.
-    """
+def load_fasta(input_file: File) -> tuple[str, str]:
+    """Load a protein with its metadata from a given .fasta file."""
     with input_file.open("r") as fasta_file:
         lines = fasta_file.read().splitlines()
     metadata = lines[0]
@@ -27,49 +24,39 @@ def load_fasta(input_file: File) -> Tuple[str, str]:
     return metadata, sequence
 
 
-def load_peptides(input_file: File) -> List[str]:
-    """
-    Load peptides from a .txt file as a list.
-    """
+def load_peptides(input_file: File) -> list[str]:
+    """Load peptides from a .txt file as a list."""
     with input_file.open("r") as peptide_file:
         lines = peptide_file.read().splitlines()
     return lines
 
 
-def load_counts(input_file: File) -> List[List[str]]:
-    """
-    Load counts from a .tsv file as a list.
-    """
+def load_counts(input_file: File) -> list[list[str]]:
+    """Load counts from a .tsv file as a list."""
     with input_file.open("r") as count_file:
         counts = [line.split("\t") for line in count_file.read().splitlines()][0]
     return counts
 
 
-def save_peptides(filename: str, peptides: List[str]) -> File:
-    """
-    Write out the list of given peptides to a .txt file. Each line is a different peptide.
-    """
+def save_peptides(filename: str, peptides: list[str]) -> File:
+    """Write out the list of given peptides to a .txt file. Each line is a different peptide."""
     output_file = File(filename)
     with output_file.open("w") as out:
         for peptide in peptides:
-            out.write("{}\n".format(peptide))
+            out.write(f"{peptide}\n")
     return output_file
 
 
-def save_counts(filename: str, peptide_counts: List[int]) -> File:
-    """
-    Write out the peptide counts to a .tsv file using tabs as a separator.
-    """
+def save_counts(filename: str, peptide_counts: list[int]) -> File:
+    """Write out the peptide counts to a .tsv file using tabs as a separator."""
     output_file = File(filename)
     with output_file.open("w") as out:
         out.write("{}\n".format("\t".join([str(c) for c in peptide_counts])))
     return output_file
 
 
-def plot_counts(filename: str, counts: List[str]) -> File:
-    """
-    Plot the calculated counts.
-    """
+def plot_counts(filename: str, counts: list[str]) -> File:
+    """Plot the calculated counts."""
     (
         amino_acid,
         n_peptides,
@@ -77,8 +64,8 @@ def plot_counts(filename: str, counts: List[str]) -> File:
         total_aa_in_peptides,
         aa_in_peptides,
     ) = counts
-    labels_n_peptides = ["No. of Peptides", "No. of Peptides w/ {}".format(amino_acid)]
-    labels_n_aa = ["Total No. of Amino Acids", "No. of {}'s".format(amino_acid)]
+    labels_n_peptides = ["No. of Peptides", f"No. of Peptides w/ {amino_acid}"]
+    labels_n_aa = ["Total No. of Amino Acids", f"No. of {amino_acid}'s"]
     colors = ["#001425", "#308AAD"]
     fig = make_subplots(rows=1, cols=2)
     fig.add_trace(
@@ -102,7 +89,7 @@ def plot_counts(filename: str, counts: List[str]) -> File:
     fig.update_layout(
         height=600,
         width=800,
-        title_text="{}'s in Peptides and Amino Acids".format(amino_acid),
+        title_text=f"{amino_acid}'s in Peptides and Amino Acids",
         showlegend=False,
     )
     if get_filesystem_class(url=filename).name == "s3":
@@ -114,10 +101,8 @@ def plot_counts(filename: str, counts: List[str]) -> File:
     return output_file
 
 
-def save_report(filename: str, report: List[List[str]]) -> File:
-    """
-    Save output report to a .tsv with given filename.
-    """
+def save_report(filename: str, report: list[list[str]]) -> File:
+    """Save output report to a .tsv with given filename."""
     output_file = File(filename)
     with output_file.open("w") as out:
         for line in report:
@@ -131,10 +116,8 @@ def digest_protein(
     missed_cleavages: int = 0,
     min_length: int = 4,
     max_length: int = 75,
-) -> List[str]:
-    """
-    Digest a protein into peptides using a given enzyme. Defaults to trypsin.
-    """
+) -> list[str]:
+    """Digest a protein into peptides using a given enzyme. Defaults to trypsin."""
     # Find the cleavage sites
     enzyme_regex = re.compile(enzyme_regex)
     sites = (
@@ -159,40 +142,32 @@ def digest_protein(
     return peptides
 
 
-def num_peptides(peptides: List[str]) -> int:
-    """
-    Retrieve the number of peptides in a given list.
-    """
+def num_peptides(peptides: list[str]) -> int:
+    """Retrieve the number of peptides in a given list."""
     return len(peptides)
 
 
-def num_peptides_with_aa(peptides: List[str], amino_acid: str = "C") -> int:
-    """
-    Count the number of peptides in a given list that contain a given amino acid.
+def num_peptides_with_aa(peptides: list[str], amino_acid: str = "C") -> int:
+    """Count the number of peptides in a given list that contain a given amino acid.
     Defaults to cysteine.
     """
     return sum([1 if amino_acid in peptide else 0 for peptide in peptides])
 
 
 def total_num_aa_in_protein(protein: str) -> int:
-    """
-    Count the total number of amino acids in a given protein string.
-    """
+    """Count the total number of amino acids in a given protein string."""
     return len(protein)
 
 
 def num_aa_in_protein(protein: str, amino_acid: str = "C") -> int:
-    """
-    Count the number of times a given amino acid occurs in a given protein.
+    """Count the number of times a given amino acid occurs in a given protein.
     Defaults to cysteine.
     """
     return protein.count(amino_acid)
 
 
-def get_report(input_files: List[File]) -> List[List[str]]:
-    """
-    Generate output report for a given list of input files.
-    """
+def get_report(input_files: list[File]) -> list[list[str]]:
+    """Generate output report for a given list of input files."""
     count_list = [
         [
             "Protein",
@@ -242,8 +217,7 @@ def digest_protein_task(
 def count_amino_acids_task(
     input_fasta: File, input_peptides: File, amino_acid: str = "C"
 ) -> File:
-    """
-    Count the number of times a given amino acid appears in a protein as well
+    """Count the number of times a given amino acid appears in a protein as well
     as its peptides after digestion.
     """
     _, protein_sequence = load_fasta(input_fasta)
@@ -271,9 +245,7 @@ def count_amino_acids_task(
 
 @task()
 def plot_count_task(input_count: File) -> File:
-    """
-    Load the calculated counts and create a plot.
-    """
+    """Load the calculated counts and create a plot."""
     counts = load_counts(input_count)
     protein = input_count.basename().split(".")[0]
     output_path = os.path.join(
@@ -284,22 +256,20 @@ def plot_count_task(input_count: File) -> File:
 
 
 @task()
-def get_report_task(input_counts: List[File]) -> File:
-    """
-    Get a list of input files from a given folder and create a report.
-    """
+def get_report_task(input_counts: list[File]) -> File:
+    """Get a list of input files from a given folder and create a report."""
     report = get_report(input_counts)
     output_path = os.path.join(
-        os.path.split(input_counts[0].dirname())[0], "data", f"protein_report.tsv"
+        os.path.split(input_counts[0].dirname())[0], "data", "protein_report.tsv"
     )
     report_file = save_report(output_path, report)
     return report_file
 
 
 @task()
-def archive_results_task(inputs_plots: List[File], input_report: File) -> File:
+def archive_results_task(inputs_plots: list[File], input_report: File) -> File:
     output_path = os.path.join(
-        os.path.split(input_report.dirname())[0], "data", f"results.tgz"
+        os.path.split(input_report.dirname())[0], "data", "results.tgz"
     )
     tar_file = File(output_path)
     with tar_file.open("wb") as out:

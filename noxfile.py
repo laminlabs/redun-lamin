@@ -1,6 +1,12 @@
 import nox
 from laminci import upload_docs_artifact
-from laminci.nox import build_docs, login_testuser1, run_pre_commit, run_pytest, install_lamindb
+from laminci.nox import (
+    build_docs,
+    install_lamindb,
+    login_testuser1,
+    run_pre_commit,
+    run_pytest,
+)
 
 nox.options.default_venv_backend = "none"
 
@@ -14,6 +20,7 @@ def lint(session: nox.Session) -> None:
 def install(session: nox.Session):
     session.run(*"uv pip install --system .[dev]".split())
     install_lamindb(session, branch="release", extras="bionty")
+
 
 @nox.session
 def build(session):

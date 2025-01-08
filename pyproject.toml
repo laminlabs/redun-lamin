@@ -37,6 +37,7 @@ omit = [
 
 [tool.ruff]
 src = ["src"]
+exclude = ["redun_lamin_fasta/lib.py"]
 line-length = 88
 lint.select = [
     "F",  # Errors detected by Pyflakes
