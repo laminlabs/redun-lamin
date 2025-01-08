@@ -100,4 +100,5 @@ def main(
 
     # (optional) push a copy of this script to lamindb as source code of the transform
     ln.finish()
+
     return results_archive
