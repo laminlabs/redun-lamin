@@ -4,7 +4,6 @@
 # Copyright Rico Meinl 2022
 from enum import Enum
 
-import bionty as bt
 import lamindb as ln
 from redun import File, task
 
@@ -60,16 +59,17 @@ def main(
         artifact.cache() for artifact in ln.Artifact.filter(key__startswith="fasta/")
     ]
     # (optional) annotate the fasta files by Protein
-    for input_file in ln.Artifact.filter(key__startswith="fasta/").all():
-        input_filepath = input_file.cache()
-        with open(input_filepath) as f:
-            header = f.readline()
-            uniprotkb_id = header.split("|")[1]
-            name = header.split("|")[2].split(" OS=")[0]
-        protein = bt.Protein.from_source(uniprotkb_id=uniprotkb_id, organism="human")
-        protein.name = name
-        protein.save()
-        input_file.proteins.add(protein)
+    # import bionty as bt
+    # for input_file in ln.Artifact.filter(key__startswith="fasta/").all():
+    #     input_filepath = input_file.cache()
+    #     with open(input_filepath) as f:
+    #         header = f.readline()
+    #         uniprotkb_id = header.split("|")[1]
+    #         name = header.split("|")[2].split(" OS=")[0]
+    #     protein = bt.Protein.from_source(uniprotkb_id=uniprotkb_id, organism="human")
+    #     protein.name = name
+    #     protein.save()
+    #     input_file.proteins.add(protein)
 
     # execute redun tasks
     task_options = {"executor": executor.value}
