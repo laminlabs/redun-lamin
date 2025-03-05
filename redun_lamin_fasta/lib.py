@@ -282,5 +282,9 @@ def archive_results_task(inputs_plots: list[File], input_report: File) -> File:
                 output_file = file_path.copy_to(tmp_file, skip_if_exists=True)
                 tar.add(output_file.path)
     # register output file in lamindb
-    ln.Artifact(output_path, description="results").save()
+    print(ln.context.run)
+    print(ln.context.transform)
+    assert ln.context.run is not None, "in archive_results_task"
+    artifact = ln.Artifact(output_path, key="data/results.tgz").save()
+    assert artifact.run is not None, "2nd in archive_results_task"
     return tar_file
