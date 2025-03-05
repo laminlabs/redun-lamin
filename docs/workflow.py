@@ -26,6 +26,12 @@ class Executor(str, Enum):
     batch_debug = "batch_debug"
 
 
+@task()
+def finish(results_archive: File) -> File:
+    ln.finish()
+    return results_archive
+
+
 @task(version="0.0.1", config_args=["executor"])
 def main(
     input_dir: str,
@@ -100,7 +106,4 @@ def main(
         count_plots, report_file
     )
 
-    # (optional) push a copy of this script to lamindb as source code of the transform
-    ln.finish()
-
-    return results_archive
+    return finish(results_archive)
