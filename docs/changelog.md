@@ -3,6 +3,7 @@
 <!-- prettier-ignore -->
 Name | PR | Developer | Date | Version
 --- | --- | --- | --- | ---
+💚 Fix by moving `ln.finish()` call into its own task | [26](https://github.com/laminlabs/redun-lamin/pull/26) | [falexwolf](https://github.com/falexwolf) | 2025-03-05 |
 👷 Fix Slack notif | [25](https://github.com/laminlabs/redun-lamin/pull/25) | [falexwolf](https://github.com/falexwolf) | 2025-01-14 |
 🛠️ Ruff & Python 3.12 CI & small nox refactoring | [24](https://github.com/laminlabs/redun-lamin/pull/24) | [Zethson](https://github.com/Zethson) | 2025-01-08 |
 ➖ Clean up deps | [23](https://github.com/laminlabs/redun-lamin/pull/23) | [sunnyosun](https://github.com/sunnyosun) | 2024-07-02 |
