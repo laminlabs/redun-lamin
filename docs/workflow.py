@@ -42,29 +42,28 @@ def main(
     max_length: int = 75,
     executor: Executor = Executor.default,
 ) -> list[File]:
-    # (optional) manually register params in Param registry
+    # lamindb tracking logic
+
+    # 1 (optional) manually register params in Param registry
     params = locals()
     params["executor"] = str(params["executor"])
     ln.save([ln.Param(name=k, dtype=type(v).__name__) for k, v in params.items()])
-    # (optional) sync workflow with a git repo
+    # 2 (optional) sync workflow with a git repo
     # ln.settings.sync_git_repo = "https://github.com/laminlabs/redun-lamin"
     # register the workflow as a script in the transform registry
-    # (optional) label revision with a semantic version
+    # 3 (optional) label revision with a semantic version
     # ln.context.version = redun_lamin_fasta.__version__
-    # track the workflow execution in lamindb
+    # 4 track the workflow execution in lamindb
     ln.track(params=params)
-    # (optional) label the transform as "redun"
+    # 5 (optional) label the transform as "redun"
     # ulabel_redun = ln.ULabel(name="redun").save()
     # ln.context.transform.ulabels.add(ulabel_redun)
-    # (optional) register input files in lamindb
-    # (typically done upstream to this workflow without passing run=False)
-    assert ln.context.run is not None, "top"
+    # 6 (optional) register & query input files in lamindb
     ln.save(ln.Artifact.from_dir(input_dir, run=False))
-    # (optional) query input files from lamindb
     input_filepaths = [
         artifact.cache() for artifact in ln.Artifact.filter(key__startswith="fasta/")
     ]
-    # (optional) annotate the fasta files by Protein
+    # 7 (optional) annotate the fasta files by Protein
     # import bionty as bt
     # for input_file in ln.Artifact.filter(key__startswith="fasta/").all():
     #     input_filepath = input_file.cache()
@@ -101,9 +100,8 @@ def main(
         plot_count_task.options(**task_options)(aa_count) for aa_count in aa_count_files
     ]
     report_file = get_report_task.options(**task_options)(aa_count_files)
-    assert ln.context.run is not None, "C"
     results_archive = archive_results_task.options(**task_options)(
         count_plots, report_file
     )
-
+    # (optional) save source code & run report in lamindb
     return finish(results_archive)
