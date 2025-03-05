@@ -5,7 +5,7 @@ docs/guide/fasta/
 docs/guide/redun_exec.json
 docs/guide/redun_stderr.txt
 docs/guide/redun_stdout.txt
-docs/guide/redun-lamin-fasta.lndb
+docs/run_logs.txt
 .lndb
 
 # macOS
