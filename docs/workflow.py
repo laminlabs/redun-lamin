@@ -44,26 +44,22 @@ def main(
 ) -> list[File]:
     # lamindb tracking logic
 
-    # 1 (optional) manually register params in Param registry
-    params = locals()
-    params["executor"] = str(params["executor"])
-    ln.save([ln.Param(name=k, dtype=type(v).__name__) for k, v in params.items()])
-    # 2 (optional) sync workflow with a git repo
+    # 1 (optional) sync workflow with a git repo
     # ln.settings.sync_git_repo = "https://github.com/laminlabs/redun-lamin"
     # register the workflow as a script in the transform registry
-    # 3 (optional) label revision with a semantic version
+    # 2 (optional) label revision with a semantic version
     # ln.context.version = redun_lamin_fasta.__version__
-    # 4 track the workflow execution in lamindb
-    ln.track(params=params)
-    # 5 (optional) label the transform as "redun"
+    # 3 track the workflow execution in lamindb
+    ln.track(params=locals())
+    # 4 (optional) label the transform as "redun"
     # ulabel_redun = ln.ULabel(name="redun").save()
     # ln.context.transform.ulabels.add(ulabel_redun)
-    # 6 (optional) register & query input files in lamindb
+    # 5 (optional) register & query input files in lamindb
     ln.save(ln.Artifact.from_dir(input_dir, run=False))
     input_filepaths = [
         artifact.cache() for artifact in ln.Artifact.filter(key__startswith="fasta/")
     ]
-    # 7 (optional) annotate the fasta files by Protein
+    # 6 (optional) annotate the fasta files by Protein
     # import bionty as bt
     # for input_file in ln.Artifact.filter(key__startswith="fasta/").all():
     #     input_filepath = input_file.cache()
@@ -103,5 +99,6 @@ def main(
     results_archive = archive_results_task.options(**task_options)(
         count_plots, report_file
     )
-    # (optional) save source code & run report in lamindb
+
+    # 7 update the finish() method (see above)
     return finish(results_archive)
