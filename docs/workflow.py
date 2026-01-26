@@ -1,6 +1,6 @@
 """workflow.py."""
 
-# This code is a copy from https://github.com/ricomnl/bioinformatics-pipeline-tutorial/blob/2ccfe727f56b449e28e83fee2d9f003ec44a2cdf/wf/workflow.py
+# This code is based on a copy from https://github.com/ricomnl/bioinformatics-pipeline-tutorial/blob/2ccfe727f56b449e28e83fee2d9f003ec44a2cdf/wf/workflow.py
 # Copyright Rico Meinl 2022
 from enum import Enum
 
@@ -26,12 +26,6 @@ class Executor(str, Enum):
     batch_debug = "batch_debug"
 
 
-@task()
-def finish(results_archive: File) -> File:
-    ln.finish()
-    return results_archive
-
-
 @task(version="0.0.1", config_args=["executor"])
 @ln.flow()
 def main(
@@ -43,11 +37,10 @@ def main(
     max_length: int = 75,
     executor: Executor = Executor.default,
 ) -> list[File]:
-    # save input files (typically done in upstream logic)
-    ln.save(ln.Artifact.from_dir(input_dir, run=False))
     # filter input files
     input_filepaths = [
-        artifact.cache() for artifact in ln.Artifact.filter(key__startswith=input_dir)
+        artifact.cache()
+        for artifact in ln.Artifact.filter(key__startswith=input_dir.lstrip("./"))
     ]
     # (optional) annotate the fasta files by Protein
     # import bionty as bt
@@ -88,4 +81,4 @@ def main(
     results_archive = archive_results_task.options(**task_options)(
         count_plots, report_file
     )
-    return finish(results_archive)
+    return results_archive
