@@ -33,6 +33,7 @@ def finish(results_archive: File) -> File:
 
 
 @task(version="0.0.1", config_args=["executor"])
+@ln.flow()
 def main(
     input_dir: str,
     amino_acid: str = "C",
@@ -42,24 +43,13 @@ def main(
     max_length: int = 75,
     executor: Executor = Executor.default,
 ) -> list[File]:
-    # lamindb tracking logic
-
-    # 1 (optional) sync workflow with a git repo
-    # ln.settings.sync_git_repo = "https://github.com/laminlabs/redun-lamin"
-    # register the workflow as a script in the transform registry
-    # 2 (optional) label revision with a semantic version
-    # ln.context.version = redun_lamin_fasta.__version__
-    # 3 track the workflow execution in lamindb
-    ln.track(params=locals())
-    # 4 (optional) label the transform as "redun"
-    # ulabel_redun = ln.ULabel(name="redun").save()
-    # ln.context.transform.ulabels.add(ulabel_redun)
-    # 5 (optional) register & query input files in lamindb
+    # save input files (typically done in upstream logic)
     ln.save(ln.Artifact.from_dir(input_dir, run=False))
+    # filter input files
     input_filepaths = [
-        artifact.cache() for artifact in ln.Artifact.filter(key__startswith="fasta/")
+        artifact.cache() for artifact in ln.Artifact.filter(key__startswith=input_dir)
     ]
-    # 6 (optional) annotate the fasta files by Protein
+    # (optional) annotate the fasta files by Protein
     # import bionty as bt
     # for input_file in ln.Artifact.filter(key__startswith="fasta/").all():
     #     input_filepath = input_file.cache()
@@ -74,7 +64,6 @@ def main(
 
     # execute redun tasks
     task_options = {"executor": executor.value}
-    assert ln.context.run is not None, "B"
     input_fastas = [File(str(path)) for path in input_filepaths]
     peptide_files = [
         digest_protein_task.options(**task_options)(
@@ -99,6 +88,4 @@ def main(
     results_archive = archive_results_task.options(**task_options)(
         count_plots, report_file
     )
-
-    # 7 update the finish() method (see above)
     return finish(results_archive)
