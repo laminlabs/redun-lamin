@@ -26,8 +26,13 @@ class Executor(str, Enum):
     batch_debug = "batch_debug"
 
 
+@task()
+def finish(results_archive: File) -> File:
+    ln.finish()
+    return results_archive
+
+
 @task(version="0.0.1", config_args=["executor"])
-@ln.flow()
 def main(
     input_dir: str,
     amino_acid: str = "C",
@@ -37,24 +42,13 @@ def main(
     max_length: int = 75,
     executor: Executor = Executor.default,
 ) -> list[File]:
-    # filter input files
+    # track the run
+    ln.track()
+    # move input files into a cache
     input_filepaths = [
         artifact.cache()
         for artifact in ln.Artifact.filter(key__startswith=input_dir.lstrip("./"))
     ]
-    # (optional) annotate the fasta files by Protein
-    # import bionty as bt
-    # for input_file in ln.Artifact.filter(key__startswith="fasta/").all():
-    #     input_filepath = input_file.cache()
-    #     with open(input_filepath) as f:
-    #         header = f.readline()
-    #         uniprotkb_id = header.split("|")[1]
-    #         name = header.split("|")[2].split(" OS=")[0]
-    #     protein = bt.Protein.from_source(uniprotkb_id=uniprotkb_id, organism="human")
-    #     protein.name = name
-    #     protein.save()
-    #     input_file.proteins.add(protein)
-
     # execute redun tasks
     task_options = {"executor": executor.value}
     input_fastas = [File(str(path)) for path in input_filepaths]
@@ -81,4 +75,4 @@ def main(
     results_archive = archive_results_task.options(**task_options)(
         count_plots, report_file
     )
-    return results_archive
+    return finish(results_archive)
