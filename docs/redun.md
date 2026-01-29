@@ -85,7 +85,7 @@ Inspect the logs:
 !cat run_logs.txt
 ```
 
-View data lineage:
+## View data lineage
 
 ```python
 artifact = ln.Artifact.get(key="data/results.tgz")
@@ -100,9 +100,9 @@ artifact.transform.describe()
 artifact.run.describe()
 ```
 
-## View transforms and runs in LaminHub
+## Explore the run on the hub
 
-Explore it at [lamin.ai/laminlabs/lamindata/transform/taasWKawCiNA](https://lamin.ai/laminlabs/lamindata/transform/taasWKawCiNA).
+→ [lamin.ai/laminlabs/lamindata/transform/taasWKawCiNA](https://lamin.ai/laminlabs/lamindata/transform/taasWKawCiNA)
 
 <img src="https://lamin-site-assets.s3.amazonaws.com/.lamindb/xzIfn0p1wAqXH1TZ0001.png" width="900px">
 
@@ -142,11 +142,4 @@ report = ln.Artifact(
 ).save()
 artifact.run.report = report
 artifact.run.save()
-```
-
-Delete the test instance:
-
-```python
-!rm -rf test-redun-lamin
-!lamin delete --force test-redun-lamin
 ```
