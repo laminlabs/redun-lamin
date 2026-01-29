@@ -2,11 +2,6 @@
 execute_via: python
 ---
 
-[![Markdown](https://img.shields.io/badge/Markdown-orange)](https://github.com/laminlabs/redun-lamin/blob/main/docs/redun.md)
-
-[![](https://img.shields.io/badge/Source%20on%20GitHub-orange)](https://github.com/laminlabs/redun-lamin-fasta/blob/main/docs/redun.ipynb)
-[![](https://img.shields.io/badge/Source%20%26%20report%20on%20Lamin-mediumseagreen)](https://lamin.ai/laminlabs/lamindata/transform/taasWKawCiNA)
-
 # Redun
 
 Here, we'll see how to track redun workflow runs with LaminDB.
