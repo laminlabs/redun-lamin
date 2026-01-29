@@ -1,5 +1,5 @@
 import nox
-from laminci import upload_docs_artifact
+from laminci import convert_executable_md_files, upload_docs_artifact
 from laminci.nox import (
     build_docs,
     install_lamindb,
@@ -24,7 +24,8 @@ def install(session: nox.Session):
 
 @nox.session
 def build(session):
+    convert_executable_md_files()
     login_testuser1(session)
     run_pytest(session, coverage=False)
-    build_docs(session, strip_prefix=True)
-    upload_docs_artifact(aws=True)
+    build_docs(session)
+    upload_docs_artifact()
