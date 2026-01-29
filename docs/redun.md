@@ -4,7 +4,7 @@ execute_via: python
 
 # Redun
 
-Here, we'll see how to track redun workflow runs with LaminDB.
+Here, we'll see how to track `redun` workflows with `lamindb`.
 
 ```{note}
 
