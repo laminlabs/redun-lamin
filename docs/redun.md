@@ -8,7 +8,7 @@ Here, we'll see how to track redun workflow runs with LaminDB.
 
 ```{note}
 
-This use case is based on [github.com/ricomnl/bioinformatics-pipeline-tutorial](https://github.com/ricomnl/bioinformatics-pipeline-tutorial/tree/redun).
+This guide is based on [github.com/ricomnl/bioinformatics-pipeline-tutorial](https://github.com/ricomnl/bioinformatics-pipeline-tutorial/tree/redun).
 
 ```
 
@@ -16,9 +16,9 @@ This use case is based on [github.com/ricomnl/bioinformatics-pipeline-tutorial](
 
 Here is how to instrument a `redun` workflow for tracking with `lamindb`:
 
-1. Add `ln.track()` ([see on GitHub](https://github.com/laminlabs/redun-lamin-fasta/blob/main/docs/workflow.py#L45))
+1. Add `ln.track()` to the `main()` task ([see on GitHub](https://github.com/laminlabs/redun-lamin-fasta/blob/main/docs/workflow.py#L45))
 
-2. Register desired output files or folders by creating artifacts for them ([see on GitHub](https://github.com/laminlabs/redun-lamin-fasta/blob/main/redun_lamin_fasta/lib.py#L315)):
+2. Register desired output files or folders by creating artifacts for them ([see on GitHub](https://github.com/laminlabs/redun-lamin/blob/main/redun_lamin_fasta/lib.py#L284)):
 
    ```python
    ln.Artifact(output_path, key="data/results.tar.gz").save()
@@ -26,15 +26,15 @@ Here is how to instrument a `redun` workflow for tracking with `lamindb`:
 
 3. Add a `finish()` task that calls `ln.finish()` ([see on GitHub](https://github.com/laminlabs/redun-lamin-fasta/blob/main/docs/workflow.py#L30))
 
-4. Optionally cache/stage input files ([see on GitHub](https://github.com/laminlabs/redun-lamin-fasta/blob/main/docs/workflow.py#L41))
+4. Optionally cache/stage input files ([see on GitHub](https://github.com/laminlabs/redun-lamin/blob/f89db8b70c7a48e346c91da74e0f86909a2a9cdb/docs/workflow.py#L47))
 
 <!-- #region -->
 
 :::{dropdown} Why not use `@ln.flow()` for `main()`?
 
-Because `main()` in redun is typically a scheduler/executor task rather than a task that performs the actual computation. `ln.flow()` would hence measure the execution time of scheduling not an actual compute run.
+Because `main()` in redun is typically a scheduler/executor task rather than a task that performs the actual computation. `ln.flow()` would then just track the execution time of scheduling, and not an actual compute run.
 
-If one wanted to use `@ln.flow()` it's advisable to wrap the scheduler:
+If one wanted to use `@ln.flow()` it's advisable to wrap the scheduling `main()` task:
 
 ```python
 @ln.flow()
