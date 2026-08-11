@@ -116,11 +116,15 @@ ln.view()
 
 ### Map the redun execution id
 
-If we want to be able to query LaminDB for redun execution ID, this here is a way to get it:
+Export the run information from redun:
 
 ```bash
-# export the run information from redun
 redun log --exec --exec-tag run=test-run --format json --no-pager > redun_exec.json
+```
+
+Map it on the run reference:
+
+```python
 # load the redun execution id from the JSON and store it in the LaminDB run record
 with open("redun_exec.json") as file:
     redun_exec = json.loads(file.readline())
