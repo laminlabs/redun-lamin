@@ -53,15 +53,15 @@ def run_pipeline(...):
 
 Let's see what the input files are:
 
-```python
-!ls ./fasta
+```bash
+ls ./fasta
 ```
 
 Create a lamindb test instance:
 
-```python
+```bash
 # pip install lamindb redun git+http://github.com/laminlabs/redun-lamin-fasta
-!lamin init --storage ./test-redun-lamin
+lamin init --storage ./test-redun-lamin
 ```
 
 Register each input file individually as an artifact:
@@ -75,14 +75,14 @@ ln.Artifact.from_dir("./fasta").save()
 
 Run the redun workflow:
 
-```python
-!redun run workflow.py main --input-dir ./fasta --tag run=test-run  1> run_logs.txt 2>run_logs.txt
+```bash
+redun run workflow.py main --input-dir ./fasta --tag run=test-run  1> run_logs.txt 2>run_logs.txt
 ```
 
 Inspect the logs:
 
-```python
-!cat run_logs.txt
+```bash
+cat run_logs.txt
 ```
 
 ## View data lineage
@@ -116,11 +116,15 @@ ln.view()
 
 ### Map the redun execution id
 
-If we want to be able to query LaminDB for redun execution ID, this here is a way to get it:
+Export the run information from redun:
+
+```bash
+redun log --exec --exec-tag run=test-run --format json --no-pager > redun_exec.json
+```
+
+Map it on the run reference:
 
 ```python
-# export the run information from redun
-!redun log --exec --exec-tag run=test-run --format json --no-pager > redun_exec.json
 # load the redun execution id from the JSON and store it in the LaminDB run record
 with open("redun_exec.json") as file:
     redun_exec = json.loads(file.readline())
